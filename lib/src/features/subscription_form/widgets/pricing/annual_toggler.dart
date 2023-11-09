@@ -5,14 +5,14 @@ import 'package:proceedix_technical_assignment/src/widgets/button/button.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button_type.dart';
 
 final List<Widget> subscriptionTypes = [
-  const Text('Monthly'),
-  const Text('Yearly'),
+  const Text(AppTranslation.monthly),
+  const Text(AppTranslation.annual),
 ];
 
 class AnnualToggler extends StatefulWidget {
   const AnnualToggler({super.key, this.toggle});
 
-  final void Function(bool isYearlyNew)? toggle;
+  final void Function(bool isAnnualNew)? toggle;
 
   @override
   State<AnnualToggler> createState() => _AnnualTogglerState();

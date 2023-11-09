@@ -4,10 +4,10 @@ class PricingTierModel {
   PricingTierModel({
     required this.amount,
     required this.title,
-    this.isYearly = false,
+    this.isAnnual = false,
   });
 
   final double amount;
   final PricingTierLabel title;
-  bool isYearly;
+  bool isAnnual;
 }
