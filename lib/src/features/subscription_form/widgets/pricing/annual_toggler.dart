@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proceedix_technical_assignment/src/app_theme_colors.dart';
+import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button_type.dart';
 
@@ -56,12 +57,11 @@ class _AnnualTogglerState extends State<AnnualToggler> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Yearly Subscription'),
-          content:
-              const Text('Each of our yearly plans gives you 2 free months.'),
+          title: const Text(AppTranslation.annualSubscription),
+          content: const Text(AppTranslation.annualDiscount),
           actions: [
             Button(
-              label: 'OK',
+              label: AppTranslation.ok,
               type: ButtonType.secondary,
               onPressed: () {
                 Navigator.of(context).pop();

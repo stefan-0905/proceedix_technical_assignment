@@ -3,6 +3,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proceedix_technical_assignment/src/app_asset_images.dart';
 import 'package:proceedix_technical_assignment/src/app_theme_colors.dart';
+import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/routing/route_names.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button_type.dart';
@@ -41,7 +42,7 @@ class LandingView extends StatelessWidget {
             Column(
               children: [
                 Button(
-                  label: 'Proceedix Enterprise',
+                  label: AppTranslation.company,
                   type: ButtonType.secondary,
                   trailingChevron: true,
                   showIcon: true,
@@ -50,7 +51,7 @@ class LandingView extends StatelessWidget {
                 ),
                 const Spacing(),
                 Button(
-                  label: 'Log in',
+                  label: AppTranslation.login,
                   showIcon: true,
                   icon: FluentIcons.person_arrow_left_16_filled,
                   onPressed: () => context.pushNamed(RouteNames.subscribe),

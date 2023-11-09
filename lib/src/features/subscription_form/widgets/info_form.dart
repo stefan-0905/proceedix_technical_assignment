@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
 import 'package:proceedix_technical_assignment/src/widgets/text_input.dart';
 
@@ -14,13 +15,13 @@ class InfoForm extends StatelessWidget {
         children: [
           TextInput(
             name: 'name',
-            label: 'Name',
+            label: AppTranslation.name,
             validator: FormBuilderValidators.required(),
           ),
           const Spacing(),
           TextInput(
             name: 'email',
-            label: 'Email',
+            label: AppTranslation.email,
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.email(),
               FormBuilderValidators.required(),
@@ -30,7 +31,7 @@ class InfoForm extends StatelessWidget {
           const Spacing(),
           TextInput(
             name: 'phoneNumber',
-            label: 'Phone Number',
+            label: AppTranslation.phoneNumber,
             validator: FormBuilderValidators.required(),
             textInputType: TextInputType.number,
           ),

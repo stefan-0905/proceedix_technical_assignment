@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:go_router/go_router.dart';
+import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/info_form.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing/subscription.dart';
-import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/summary.dart';
+import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/summary/summary.dart';
+import 'package:proceedix_technical_assignment/src/models/person_model.dart';
 import 'package:proceedix_technical_assignment/src/models/subscription_plan_model.dart';
+import 'package:proceedix_technical_assignment/src/routing/route_names.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button_type.dart';
 
@@ -27,8 +31,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
     steps = getSteps();
 
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(top: 100),
+      body: Center(
         child: FormBuilder(
           key: _formKey,
           child: Stepper(
@@ -46,7 +49,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
                     if (_currentStep > 0)
                       Expanded(
                         child: Button(
-                          label: 'Back',
+                          label: AppTranslation.back,
                           onPressed: details.onStepCancel,
                         ),
                       )
@@ -55,9 +58,9 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
                     const Spacer(),
                     Expanded(
                       child: Button(
-                         label: _currentStep == steps.length - 1
-                            ? 'Confirm'
-                            : 'Next',
+                        label: _currentStep == steps.length - 1
+                            ? AppTranslation.confirm
+                            : AppTranslation.next,
                         type: ButtonType.secondary,
                         onPressed: details.onStepContinue,
                       ),
@@ -74,13 +77,13 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
 
   List<Step> getSteps() => [
         Step(
-          title: Text(_currentStep == 0 ? 'Information' : ""),
+          title: Text(_currentStep == 0 ? AppTranslation.contact : ""),
           content: const InfoForm(),
           isActive: _currentStep >= 0,
           state: _currentStep > 0 ? StepState.complete : StepState.indexed,
         ),
         Step(
-          title: Text(_currentStep == 1 ? 'Subscription' : ''),
+          title: Text(_currentStep == 1 ? AppTranslation.subscription : ''),
           content: Subscription(
             subscriptionPlan: subscriptionPlan,
             setSubscriptionPlan: _selectSubscriptionPlan,
@@ -89,12 +92,29 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
           state: _currentStep > 1 ? StepState.complete : StepState.indexed,
         ),
         Step(
-          title: Text(_currentStep == 2 ? 'Summary' : ''),
-          content: const Summary(),
+          title: Text(_currentStep == 2 ? AppTranslation.summary : ''),
+          content: Summary(
+            person: _getUser(),
+            subscriptionPlan: subscriptionPlan,
+          ),
           isActive: _currentStep >= 2,
           state: _currentStep > 2 ? StepState.complete : StepState.indexed,
         ),
       ];
+
+  PersonModel? _getUser() {
+    final state = _formKey.currentState;
+    if (state == null) {
+      return null;
+    }
+    final formValues = state.instantValue;
+
+    return PersonModel(
+      name: formValues['name'],
+      email: formValues['email'],
+      number: formValues['phoneNumber'],
+    );
+  }
 
   void _selectSubscriptionPlan(SubscriptionPlanModel tier) {
     setState(() {
@@ -109,7 +129,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
       }
     }
 
-    _confirm();
+    _confirm();    
   }
 
   bool _validate() {
@@ -122,7 +142,6 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
 
   void _nextPage() {
     setState(() => _currentStep += 1);
-    debugPrint(_currentStep.toString());
   }
 
   void _previousPage() {
@@ -131,5 +150,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
     }
   }
 
-  void _confirm() {}
+  void _confirm() {
+    context.goNamed(RouteNames.thankYou);
+  }
 }

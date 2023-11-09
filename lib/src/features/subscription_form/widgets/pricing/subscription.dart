@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing/annual_toggler.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing/tier.dart';
 import 'package:proceedix_technical_assignment/src/models/pricing_tier_model.dart';
@@ -34,7 +35,7 @@ class _SubscriptionState extends State<Subscription> {
     return Column(
       children: [
         Text(
-          "${isAnnual ? 'Yearly' : 'Monthly'} Subscription",
+          "${isAnnual ? AppTranslation.annual : AppTranslation.monthly} ${AppTranslation.subscription}",
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
@@ -46,8 +47,8 @@ class _SubscriptionState extends State<Subscription> {
           (tier) => Tier(
             title: tier.title.name,
             trailing: isAnnual
-                ? "${tier.amount * 10} / year"
-                : "${tier.amount} / month",
+                ? "${tier.amount * 10} / ${AppTranslation.year}"
+                : "${tier.amount} / ${AppTranslation.month}",
             isSelected: widget.subscriptionPlan?.tier.title == tier.title,
             onTap: () => _onTierSelected(tier, isAnnual: isAnnual),
           ),
