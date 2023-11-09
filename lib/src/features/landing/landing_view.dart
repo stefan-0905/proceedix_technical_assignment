@@ -8,7 +8,6 @@ import 'package:proceedix_technical_assignment/src/routing/route_names.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button_type.dart';
 import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
-import 'package:scaler/scaler.dart';
 
 class LandingView extends StatelessWidget {
   const LandingView({super.key});
@@ -38,7 +37,10 @@ class LandingView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(AppAssetImage.logo, width: Scaler.width(0.7, context)),
+            Image.asset(
+              AppAssetImage.logo,
+              width: MediaQuery.of(context).size.width * 0.7,
+            ),
             Column(
               children: [
                 Button(

@@ -30,6 +30,12 @@ class _SubscriptionState extends State<Subscription> {
   bool isAnnual = false;
 
   @override
+  void initState() {
+    isAnnual = widget.subscriptionPlan?.isAnnual ?? false;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -53,6 +59,7 @@ class _SubscriptionState extends State<Subscription> {
         ),
         const Spacing(),
         AnnualToggler(
+          initialValue: isAnnual,
           toggle: _toggleIsAnnual,
         ),
       ],

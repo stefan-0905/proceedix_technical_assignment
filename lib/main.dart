@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:proceedix_technical_assignment/src/features/services/shared_preferences_wrapper.dart';
 import 'package:proceedix_technical_assignment/src/routing/routes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesWrapper().initialize();
   runApp(const MainApp());
 }
 

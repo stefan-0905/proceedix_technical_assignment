@@ -33,7 +33,7 @@ class PersonCard extends StatelessWidget {
           ListTile(
             title: const Text(AppTranslation.phoneNumber),
             trailing: Text(
-              person.number,
+              person.phoneNumber,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),

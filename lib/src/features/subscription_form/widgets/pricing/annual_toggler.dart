@@ -10,16 +10,28 @@ final List<Widget> subscriptionTypes = [
 ];
 
 class AnnualToggler extends StatefulWidget {
-  const AnnualToggler({super.key, this.toggle});
+  const AnnualToggler({
+    super.key,
+    this.toggle,
+    this.initialValue = false,
+  });
 
   final void Function(bool isAnnualNew)? toggle;
+  final bool initialValue;
 
   @override
   State<AnnualToggler> createState() => _AnnualTogglerState();
 }
 
 class _AnnualTogglerState extends State<AnnualToggler> {
-  final List<bool> _selectedSubscriptionType = [true, false];
+  List<bool> _selectedSubscriptionType = [true, false];
+
+  @override
+  void initState() {
+    _selectedSubscriptionType =
+        widget.initialValue ? [false, true] : [true, false];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
