@@ -15,10 +15,12 @@ class SubscriptionFormView extends StatefulWidget {
 }
 
 class _SubscriptionFormViewState extends State<SubscriptionFormView> {
-  int _currentStep = 0;
-  final _formKey = GlobalKey<FormBuilderState>();
-  SubscriptionPlanModel? selectedTier;
   late List<Step> steps;
+
+  int _currentStep = 0;
+
+  final _formKey = GlobalKey<FormBuilderState>();
+  SubscriptionPlanModel? subscriptionPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +82,8 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
         Step(
           title: Text(_currentStep == 1 ? 'Subscription' : ''),
           content: Subscription(
-            selectedTier: selectedTier,
-            setSelectedTier: _selectTier,
+            subscriptionPlan: subscriptionPlan,
+            setSubscriptionPlan: _selectSubscriptionPlan,
           ),
           isActive: _currentStep >= 1,
           state: _currentStep > 1 ? StepState.complete : StepState.indexed,
@@ -94,9 +96,9 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
         ),
       ];
 
-  void _selectTier(SubscriptionPlanModel tier) {
+  void _selectSubscriptionPlan(SubscriptionPlanModel tier) {
     setState(() {
-      selectedTier = tier;
+      subscriptionPlan = tier;
     });
   }
 

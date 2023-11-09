@@ -15,12 +15,12 @@ List<PricingTierModel> tiers = [
 class Subscription extends StatefulWidget {
   const Subscription({
     super.key,
-    required this.setSelectedTier,
-    this.selectedTier,
+    required this.setSubscriptionPlan,
+    this.subscriptionPlan,
   });
 
-  final void Function(SubscriptionPlanModel tier) setSelectedTier;
-  final SubscriptionPlanModel? selectedTier;
+  final void Function(SubscriptionPlanModel tier) setSubscriptionPlan;
+  final SubscriptionPlanModel? subscriptionPlan;
 
   @override
   State<Subscription> createState() => _SubscriptionState();
@@ -48,7 +48,7 @@ class _SubscriptionState extends State<Subscription> {
             trailing: isAnnual
                 ? "${tier.amount * 10} / year"
                 : "${tier.amount} / month",
-            isSelected: widget.selectedTier?.tier.title == tier.title,
+            isSelected: widget.subscriptionPlan?.tier.title == tier.title,
             onTap: () => _onTierSelected(tier, isAnnual: isAnnual),
           ),
         ),
@@ -64,7 +64,7 @@ class _SubscriptionState extends State<Subscription> {
     setState(() {
       isAnnual = isAnnualNew;
     });
-    final selected = widget.selectedTier;
+    final selected = widget.subscriptionPlan;
     if (selected != null) {
       _onTierSelected(
         selected.tier,
@@ -74,7 +74,7 @@ class _SubscriptionState extends State<Subscription> {
   }
 
   void _onTierSelected(PricingTierModel tier, {bool isAnnual = false}) {
-    widget.setSelectedTier(
+    widget.setSubscriptionPlan(
       SubscriptionPlanModel(
         tier: tier,
         isAnnual: isAnnual,
