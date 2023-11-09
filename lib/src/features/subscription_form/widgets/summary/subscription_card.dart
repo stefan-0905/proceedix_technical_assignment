@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/models/subscription_plan_model.dart';
+import 'package:proceedix_technical_assignment/src/util/format_price.dart';
 import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
 
 class SubscriptionCard extends StatelessWidget {
@@ -28,8 +29,8 @@ class SubscriptionCard extends StatelessWidget {
           title: const Text(AppTranslation.price),
           trailing: Text(
             subscription.isAnnual
-                ? (subscription.tier.amount * 10).toString()
-                : subscription.tier.amount.toString(),
+                ? formatWithCurrency(subscription.tier.amount * 10)
+                : formatWithCurrency(subscription.tier.amount),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -51,8 +52,8 @@ class SubscriptionCard extends StatelessWidget {
           title: const Text(AppTranslation.totalPerYear),
           trailing: Text(
             subscription.isAnnual
-                ? (subscription.tier.amount * 10).toString()
-                : (subscription.tier.amount * 12).toString(),
+                ? formatWithCurrency(subscription.tier.amount * 10)
+                : formatWithCurrency(subscription.tier.amount * 12),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),

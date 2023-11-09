@@ -4,6 +4,7 @@ import 'package:proceedix_technical_assignment/src/features/subscription_form/wi
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing/tier.dart';
 import 'package:proceedix_technical_assignment/src/models/pricing_tier_model.dart';
 import 'package:proceedix_technical_assignment/src/models/subscription_plan_model.dart';
+import 'package:proceedix_technical_assignment/src/util/format_price.dart';
 import 'package:proceedix_technical_assignment/src/util/pricing_tier_label.dart';
 import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
 
@@ -47,8 +48,8 @@ class _SubscriptionState extends State<Subscription> {
           (tier) => Tier(
             title: tier.title.name,
             trailing: isAnnual
-                ? "${tier.amount * 10} / ${AppTranslation.year}"
-                : "${tier.amount} / ${AppTranslation.month}",
+                ? "${formatWithCurrency(tier.amount * 10)} / ${AppTranslation.year}"
+                : "${formatWithCurrency(tier.amount)} / ${AppTranslation.month}",
             isSelected: widget.subscriptionPlan?.tier.title == tier.title,
             onTap: () => _onTierSelected(tier, isAnnual: isAnnual),
           ),
