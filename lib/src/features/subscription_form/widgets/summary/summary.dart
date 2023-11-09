@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/summary/person_card.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/summary/subscription_card.dart';
+import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/summary/summary_section.dart';
 import 'package:proceedix_technical_assignment/src/models/person_model.dart';
 import 'package:proceedix_technical_assignment/src/models/subscription_plan_model.dart';
 import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
@@ -31,33 +32,19 @@ class Summary extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  AppTranslation.contact,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+              SummarySection(
+                title: AppTranslation.contact,
+                child: PersonCard(
+                  person: localPerson,
                 ),
-              ),
-              PersonCard(
-                person: localPerson,
               ),
               const Spacing(),
-              const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  AppTranslation.subscription,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+              SummarySection(
+                title: AppTranslation.subscription,
+                child: SubscriptionCard(
+                  subscription: localSubscription,
                 ),
               ),
-              SubscriptionCard(
-                subscription: localSubscription,
-              )
             ],
           ),
         ),

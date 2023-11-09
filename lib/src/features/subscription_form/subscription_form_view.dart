@@ -116,9 +116,9 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
     );
   }
 
-  void _selectSubscriptionPlan(SubscriptionPlanModel tier) {
+  void _selectSubscriptionPlan(SubscriptionPlanModel plan) {
     setState(() {
-      subscriptionPlan = tier;
+      subscriptionPlan = plan;
     });
   }
 

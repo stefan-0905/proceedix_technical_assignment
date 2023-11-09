@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proceedix_technical_assignment/src/app_theme_colors.dart';
 
-class Tier extends StatelessWidget {
-  const Tier({
+class SubscriptionTier extends StatelessWidget {
+  const SubscriptionTier({
     super.key,
     required this.title,
     required this.trailing,

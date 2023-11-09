@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:intl/intl.dart';
 
-String formatWithCurrency(double number, {String symbol = '\$'}) {
-  return NumberFormat.currency(locale: 'en', symbol: symbol).format(number);
-}
+String formatWithCurrency(double number, {String symbol = '\$'}) =>
+    NumberFormat.currency(locale: Platform.localeName, symbol: symbol)
+        .format(number);

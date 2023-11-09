@@ -1,4 +1,4 @@
-enum PricingTierLabel {
+enum SubscriptionPlanTier {
   basic,
   normal,
   advanced,

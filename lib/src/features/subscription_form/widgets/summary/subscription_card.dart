@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/models/subscription_plan_model.dart';
-import 'package:proceedix_technical_assignment/src/util/format_price.dart';
 import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
 
 class SubscriptionCard extends StatelessWidget {
@@ -19,7 +18,7 @@ class SubscriptionCard extends StatelessWidget {
         ListTile(
           title: const Text(AppTranslation.tier),
           trailing: Text(
-            subscription.tier.title.name.toUpperCase(),
+            subscription.title.name.toUpperCase(),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -28,9 +27,7 @@ class SubscriptionCard extends StatelessWidget {
         ListTile(
           title: const Text(AppTranslation.price),
           trailing: Text(
-            subscription.isAnnual
-                ? formatWithCurrency(subscription.tier.amount * 10)
-                : formatWithCurrency(subscription.tier.amount),
+            subscription.getPrice(),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -51,9 +48,7 @@ class SubscriptionCard extends StatelessWidget {
         ListTile(
           title: const Text(AppTranslation.totalPerYear),
           trailing: Text(
-            subscription.isAnnual
-                ? formatWithCurrency(subscription.tier.amount * 10)
-                : formatWithCurrency(subscription.tier.amount * 12),
+            subscription.getAnnualPrice(),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
