@@ -127,13 +127,20 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
       if (_validate()) {
         return _nextPage();
       }
+      return;
     }
 
-    _confirm();    
+    _confirm();
   }
 
   bool _validate() {
+    // First step validation
     if (_formKey.currentState?.validate() == false) {
+      return false;
+    }
+
+    // Second step validation
+    if (_currentStep == 1 && subscriptionPlan == null) {
       return false;
     }
 
