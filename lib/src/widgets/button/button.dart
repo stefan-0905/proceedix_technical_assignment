@@ -7,19 +7,21 @@ class Button extends StatelessWidget {
   const Button({
     super.key,
     required this.label,
-    this.onPressedCallback,
+    this.onPressed,
     this.type = ButtonType.elevated,
     this.trailingChevron = false,
     this.showIcon = false,
     this.icon,
+    this.isDisabled = false,
   });
 
   final String label;
-  final VoidCallback? onPressedCallback;
+  final VoidCallback? onPressed;
   final ButtonType type;
   final bool trailingChevron;
   final bool showIcon;
   final IconData? icon;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -36,23 +38,25 @@ class Button extends StatelessWidget {
         ),
         visualDensity: const VisualDensity(vertical: 2),
       ),
-      onPressed: onPressedCallback,
+      onPressed: isDisabled ? null : onPressed,
       child: Row(
         children: [
           Expanded(
             child: Text.rich(
+              textAlign: TextAlign.center,
               TextSpan(
                 children: [
                   if (showIcon && icon != null)
                     WidgetSpan(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
                         child: Icon(
-                      icon,
-                      color: textColor,
-                      size: 18,
-                    ),),
-                  const WidgetSpan(
-                    child: SizedBox(width: 10),
-                  ),
+                          icon,
+                          color: textColor,
+                          size: 18,
+                        ),
+                      ),
+                    ),
                   TextSpan(
                     text: label,
                     style: TextStyle(
@@ -63,7 +67,6 @@ class Button extends StatelessWidget {
                   ),
                 ],
               ),
-              textAlign: TextAlign.center,
             ),
           ),
           if (trailingChevron)

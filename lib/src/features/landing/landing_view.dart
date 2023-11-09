@@ -6,6 +6,7 @@ import 'package:proceedix_technical_assignment/src/app_theme_colors.dart';
 import 'package:proceedix_technical_assignment/src/routing/route_names.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button_type.dart';
+import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
 import 'package:scaler/scaler.dart';
 
 class LandingView extends StatelessWidget {
@@ -45,18 +46,14 @@ class LandingView extends StatelessWidget {
                   trailingChevron: true,
                   showIcon: true,
                   icon: FluentIcons.cloud_16_filled,
-                  onPressedCallback: () =>
-                      context.pushNamed(RouteNames.subscribe),
+                  onPressed: () => context.pushNamed(RouteNames.subscribe),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const Spacing(),
                 Button(
                   label: 'Log in',
                   showIcon: true,
                   icon: FluentIcons.person_arrow_left_16_filled,
-                  onPressedCallback: () =>
-                      context.pushNamed(RouteNames.subscribe),
+                  onPressed: () => context.pushNamed(RouteNames.subscribe),
                 )
               ],
             )

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/info_form.dart';
-import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing_tiers.dart';
+import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing/subscription.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/summary.dart';
+import 'package:proceedix_technical_assignment/src/models/subscription_plan_model.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button.dart';
 import 'package:proceedix_technical_assignment/src/widgets/button/button_type.dart';
 
@@ -13,88 +15,117 @@ class SubscriptionFormView extends StatefulWidget {
 }
 
 class _SubscriptionFormViewState extends State<SubscriptionFormView> {
-  int _currentIndex = 0;
-  late final PageController _pageController;
-  final List<WidgetBuilder> _pageOptions = [
-    (_) => const InfoForm(),
-    (_) => const PricingTiers(),
-    (_) => const Summary(),
-  ];
-
-  @override
-  void initState() {
-    _pageController = PageController(initialPage: _currentIndex);
-    super.initState();
-  }
+  int _currentStep = 0;
+  final _formKey = GlobalKey<FormBuilderState>();
+  SubscriptionPlanModel? selectedTier;
+  late List<Step> steps;
 
   @override
   Widget build(BuildContext context) {
+    steps = getSteps();
+
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _pageOptions.length,
-              itemBuilder: (context, index) => _pageOptions[index](context),
-            ),
-          ),
-          Row(
-            children: [
-              if (_currentIndex > 0)
-                Flexible(
-                  child: Button(
-                      label: 'Previous', onPressedCallback: _previousPage),
-                )
-              else
-                const Spacer(),
-              const Spacer(),
-              Flexible(
-                child: Button(
-                  type: ButtonType.secondary,
-                  label: _currentIndex < 2 ? 'Next' : 'Confirm',
-                  onPressedCallback: _next,
+      body: Container(
+        padding: const EdgeInsets.only(top: 100),
+        child: FormBuilder(
+          key: _formKey,
+          child: Stepper(
+            currentStep: _currentStep,
+            steps: steps,
+            type: StepperType.horizontal,
+            onStepContinue: _next,
+            onStepCancel: _previousPage,
+            controlsBuilder: (context, details) {
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                child: Row(
+                  children: [
+                    if (_currentStep > 0)
+                      Expanded(
+                        child: Button(
+                          label: 'Back',
+                          onPressed: details.onStepCancel,
+                        ),
+                      )
+                    else
+                      const Spacer(),
+                    const Spacer(),
+                    Expanded(
+                      child: Button(
+                         label: _currentStep == steps.length - 1
+                            ? 'Confirm'
+                            : 'Next',
+                        type: ButtonType.secondary,
+                        onPressed: details.onStepContinue,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          )
-        ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 
+  List<Step> getSteps() => [
+        Step(
+          title: Text(_currentStep == 0 ? 'Information' : ""),
+          content: const InfoForm(),
+          isActive: _currentStep >= 0,
+          state: _currentStep > 0 ? StepState.complete : StepState.indexed,
+        ),
+        Step(
+          title: Text(_currentStep == 1 ? 'Subscription' : ''),
+          content: Subscription(
+            selectedTier: selectedTier,
+            setSelectedTier: _selectTier,
+          ),
+          isActive: _currentStep >= 1,
+          state: _currentStep > 1 ? StepState.complete : StepState.indexed,
+        ),
+        Step(
+          title: Text(_currentStep == 2 ? 'Summary' : ''),
+          content: const Summary(),
+          isActive: _currentStep >= 2,
+          state: _currentStep > 2 ? StepState.complete : StepState.indexed,
+        ),
+      ];
+
+  void _selectTier(SubscriptionPlanModel tier) {
+    setState(() {
+      selectedTier = tier;
+    });
+  }
+
   void _next() {
-    if (_currentIndex < 2) {
-      return _nextPage();
+    if (_currentStep < steps.length - 1) {
+      if (_validate()) {
+        return _nextPage();
+      }
     }
 
-    debugPrint('Confirm');
+    _confirm();
+  }
+
+  bool _validate() {
+    if (_formKey.currentState?.validate() == false) {
+      return false;
+    }
+
+    return true;
   }
 
   void _nextPage() {
-    if (_pageController.hasClients) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeIn,
-      );
-      setState(() {
-        _currentIndex += 1;
-      });
-    }
+    setState(() => _currentStep += 1);
+    debugPrint(_currentStep.toString());
   }
 
   void _previousPage() {
-    if (_pageController.hasClients) {
-      _pageController
-          .previousPage(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeIn,
-          )
-          .then((value) => {});
-      setState(() {
-        _currentIndex -= 1;
-      });
+    if (_currentStep >= 0) {
+      setState(() => _currentStep -= 1);
     }
   }
 

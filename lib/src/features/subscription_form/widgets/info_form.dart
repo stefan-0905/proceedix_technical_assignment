@@ -1,17 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:proceedix_technical_assignment/src/widgets/spacing.dart';
+import 'package:proceedix_technical_assignment/src/widgets/text_input.dart';
 
-class InfoForm extends StatefulWidget {
+class InfoForm extends StatelessWidget {
   const InfoForm({super.key});
 
   @override
-  State<InfoForm> createState() => _InfoFormState();
-}
-
-class _InfoFormState extends State<InfoForm> {
-  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Info Form'),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          TextInput(
+            name: 'name',
+            label: 'Name',
+            validator: FormBuilderValidators.required(),
+          ),
+          const Spacing(),
+          TextInput(
+            name: 'email',
+            label: 'Email',
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.email(),
+              FormBuilderValidators.required(),
+            ]),
+            textInputType: TextInputType.emailAddress,
+          ),
+          const Spacing(),
+          TextInput(
+            name: 'phoneNumber',
+            label: 'Phone Number',
+            validator: FormBuilderValidators.required(),
+            textInputType: TextInputType.number,
+          ),
+        ],
+      ),
     );
   }
 }
