@@ -3,7 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proceedix_technical_assignment/src/app_theme_colors.dart';
 import 'package:proceedix_technical_assignment/src/app_translation.dart';
-import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/info_form.dart';
+import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/person_form.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing/subscription.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/summary/summary.dart';
 import 'package:proceedix_technical_assignment/src/models/person_model.dart';
@@ -26,10 +26,12 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
 
   final _formKey = GlobalKey<FormBuilderState>();
   SubscriptionPlanModel? _subscriptionPlan;
+  late PersonModel? _person;
 
   @override
   void initState() {
-    _initSubscriptionFromStorage();
+    _subscriptionPlan = _initSubscriptionFromStorage();
+    _person = _initPersonFromStorage();
     super.initState();
   }
 
@@ -40,12 +42,12 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Subscription'),
+        title: const Text(AppTranslation.subscription),
         backgroundColor: AppThemeColors.secondary,
       ),
       body: FormBuilder(
         key: _formKey,
-        initialValue: _getPersonFromStorage(),
+        initialValue: _person?.toJson() ?? {},
         child: Stepper(
           currentStep: _currentStep,
           steps: steps,
@@ -90,7 +92,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
   List<Step> getSteps() => [
         Step(
           title: Text(_currentStep == 0 ? AppTranslation.contact : ""),
-          content: const InfoForm(),
+          content: const PersonForm(),
           isActive: _currentStep >= 0,
           state: _currentStep > 0 ? StepState.complete : StepState.indexed,
         ),
@@ -98,7 +100,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
           title: Text(_currentStep == 1 ? AppTranslation.subscription : ''),
           content: Subscription(
             subscriptionPlan: _subscriptionPlan,
-            setSubscriptionPlan: _selectSubscriptionPlan,
+            setSubscriptionPlan: _setSubscriptionPlan,
           ),
           isActive: _currentStep >= 1,
           state: _currentStep > 1 ? StepState.complete : StepState.indexed,
@@ -106,7 +108,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
         Step(
           title: Text(_currentStep == 2 ? AppTranslation.summary : ''),
           content: Summary(
-            person: _getPerson(),
+            person: _person,
             subscriptionPlan: _subscriptionPlan,
           ),
           isActive: _currentStep >= 2,
@@ -114,19 +116,15 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
         ),
       ];
 
-  void _initSubscriptionFromStorage() {
-    _subscriptionPlan = SubscriptionPlanModel.fromSharedPreferences();
+  SubscriptionPlanModel? _initSubscriptionFromStorage() {
+    return SubscriptionPlanModel.fromSharedPreferences();
   }
 
-  Map<String, dynamic> _getPersonFromStorage() {
-    final previousData = PersonModel.fromSharedPreferences();
-    if (previousData != null) {
-      return previousData.toJson();
-    }
-    return {};
+  PersonModel? _initPersonFromStorage() {
+    return PersonModel.fromSharedPreferences();
   }
 
-  PersonModel? _getPerson() {
+  PersonModel? _getPersonFromForm() {
     final state = _formKey.currentState;
     if (state == null) {
       return null;
@@ -136,9 +134,15 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
     return PersonModel.fromJson(formValues);
   }
 
-  void _selectSubscriptionPlan(SubscriptionPlanModel plan) {
+  void _setSubscriptionPlan(SubscriptionPlanModel plan) {
     setState(() {
       _subscriptionPlan = plan;
+    });
+  }
+
+    void _setPerson(PersonModel? person) {
+    setState(() {
+      _person = person;
     });
   }
 
@@ -162,7 +166,8 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
             return false;
           }
 
-          await _getPerson()?.toSharePreferences();
+          _setPerson(_getPersonFromForm());
+          await _person?.toSharePreferences();
 
           break;
         }
@@ -202,7 +207,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
     _currentStep = 0;
     _formKey.currentState?.reset();
     _subscriptionPlan?.removeFromSharedPreferences();
-    _getPerson()?.removeFromSharedPreferences();
+    _person?.removeFromSharedPreferences();
   }
 
   void _showSubscriptionRequiredModal() {
