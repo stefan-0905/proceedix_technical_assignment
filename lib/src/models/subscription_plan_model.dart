@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:proceedix_technical_assignment/src/features/services/shared_preferences_wrapper.dart';
 import 'package:proceedix_technical_assignment/src/util/format_price.dart';
 import 'package:proceedix_technical_assignment/src/util/subscription_plan_tier.dart';
@@ -47,7 +46,6 @@ class SubscriptionPlanModel {
   static SubscriptionPlanModel? fromSharedPreferences() {
     final string = SharedPreferencesWrapper().getObject('subscription');
     if (string != null) {
-      debugPrint(string);
       return fromJson(jsonDecode(string));
     }
     return null;
