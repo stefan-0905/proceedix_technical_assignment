@@ -23,5 +23,7 @@ class AppTranslation {
   static const annualSubscription = 'Annual Subscription';
   static const annualDiscount = 'Each of our annual plans gives you 2 free months.';
   static const ok = 'OK';
+  static const subscriptionRequired = 'Subscription required';
+  static const subscriptionRequiredContent = 'You have to select one of the subscription plans in order to proceed.';
 
 }

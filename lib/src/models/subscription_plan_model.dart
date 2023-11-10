@@ -52,4 +52,8 @@ class SubscriptionPlanModel {
     }
     return null;
   }
+
+  void removeFromSharedPreferences() {
+    SharedPreferencesWrapper().remove('subscription');
+  }
 }

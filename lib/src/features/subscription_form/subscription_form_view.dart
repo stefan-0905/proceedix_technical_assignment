@@ -165,6 +165,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
         {
           // Second step validation
           if (_currentStep == 1 && _subscriptionPlan == null) {
+            _showSubscriptionRequiredModal();
             return false;
           }
 
@@ -188,6 +189,30 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
   }
 
   void _confirm() {
+    _reset();
     context.goNamed(RouteNames.thankYou);
+  }
+
+  void _reset() {
+    _currentStep = 0;
+    _formKey.currentState?.reset();
+    _subscriptionPlan?.removeFromSharedPreferences();
+    _getPerson()?.removeFromSharedPreferences();
+  }
+
+  void _showSubscriptionRequiredModal() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text(AppTranslation.subscriptionRequired),
+        content: const Text(AppTranslation.subscriptionRequiredContent),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(AppTranslation.ok),
+          ),
+        ],
+      ),
+    );
   }
 }

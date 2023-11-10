@@ -25,4 +25,8 @@ class SharedPreferencesWrapper {
   String? getObject(String key) {
     return _prefs.getString(key);
   }
+
+  void remove(String key) {
+    _prefs.remove(key);
+  }
 }

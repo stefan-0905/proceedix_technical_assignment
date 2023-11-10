@@ -42,4 +42,8 @@ class PersonModel {
     }
     return null;
   }
+
+  void removeFromSharedPreferences() {
+    SharedPreferencesWrapper().remove('person');
+  }
 }
