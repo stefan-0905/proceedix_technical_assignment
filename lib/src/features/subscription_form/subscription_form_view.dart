@@ -25,7 +25,7 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
   int _currentStep = 0;
 
   final _formKey = GlobalKey<FormBuilderState>();
-  SubscriptionPlanModel? _subscriptionPlan;
+  late SubscriptionPlanModel? _subscriptionPlan;
   late PersonModel? _person;
 
   @override
