@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proceedix_technical_assignment/src/app_theme_colors.dart';
 import 'package:proceedix_technical_assignment/src/app_translation.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/info_form.dart';
 import 'package:proceedix_technical_assignment/src/features/subscription_form/widgets/pricing/subscription.dart';
@@ -37,46 +38,50 @@ class _SubscriptionFormViewState extends State<SubscriptionFormView> {
     steps = getSteps();
 
     return Scaffold(
-      body: Center(
-        child: FormBuilder(
-          key: _formKey,
-          initialValue: _getPersonFromStorage(),
-          child: Stepper(
-            currentStep: _currentStep,
-            steps: steps,
-            type: StepperType.horizontal,
-            onStepContinue: _next,
-            onStepCancel: _previousPage,
-            controlsBuilder: (context, details) {
-              return Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                child: Row(
-                  children: [
-                    if (_currentStep > 0)
-                      Expanded(
-                        child: Button(
-                          label: AppTranslation.back,
-                          onPressed: details.onStepCancel,
-                        ),
-                      )
-                    else
-                      const Spacer(),
-                    const Spacer(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Subscription'),
+        backgroundColor: AppThemeColors.secondary,
+      ),
+      body: FormBuilder(
+        key: _formKey,
+        initialValue: _getPersonFromStorage(),
+        child: Stepper(
+          currentStep: _currentStep,
+          steps: steps,
+          connectorColor:
+              const MaterialStatePropertyAll(AppThemeColors.secondary),
+          type: StepperType.horizontal,
+          onStepContinue: _next,
+          onStepCancel: _previousPage,
+          controlsBuilder: (context, details) {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+              child: Row(
+                children: [
+                  if (_currentStep > 0)
                     Expanded(
                       child: Button(
-                        label: _currentStep == steps.length - 1
-                            ? AppTranslation.confirm
-                            : AppTranslation.next,
-                        type: ButtonType.secondary,
-                        onPressed: details.onStepContinue,
+                        label: AppTranslation.back,
+                        onPressed: details.onStepCancel,
                       ),
+                    )
+                  else
+                    const Spacer(),
+                  const Spacer(),
+                  Expanded(
+                    child: Button(
+                      label: _currentStep == steps.length - 1
+                          ? AppTranslation.confirm
+                          : AppTranslation.next,
+                      type: ButtonType.secondary,
+                      onPressed: details.onStepContinue,
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
